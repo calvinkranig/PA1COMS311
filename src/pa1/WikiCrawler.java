@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.net.*;
 
 /**
- * Class for Cawling the wikis
+ * Class for Crawling the wikis
  * 
  * @author ckranig, ans66
  *
