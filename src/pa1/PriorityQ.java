@@ -49,7 +49,10 @@ public class PriorityQ {
 	 * @return Maximum, extracted String.
 	 */
 	public String extractMax() {
-		return null;
+		String max = this.returnMax();
+		
+		//TODO
+		return max;
 	}
 	
 	/**
@@ -57,7 +60,7 @@ public class PriorityQ {
 	 * @param i Index of element in array to be removed.
 	 */
 	public void remove(int i) {
-		
+		//TODO
 	}
 	
 	/**
@@ -66,7 +69,7 @@ public class PriorityQ {
 	 * @param k Amount of decrease for the ith element.
 	 */
 	public void decrementPriority(int i, int k) {
-		
+		//TODO
 	}
 	
 	/**
@@ -74,7 +77,45 @@ public class PriorityQ {
 	 * @return Priority Array of the priority queue.
 	 */
 	public int[] priorityArray() {
-		return null;
+		
+		int[] priArr = new int[heapSize]; // create array for the priorities
+		for(int i = 0; i < heapSize; ++i) { // for all Entries in the heapArray, enter their priorities into the priArr
+			priArr[i] = heapArray[i].getPriority();
+		}
+		return priArr;
+	}
+	
+	/**
+	 * Returns value(A[i]), where A is the array used to represent the priority queue
+	 * @param i index of Entry that holds the returned value
+	 * @return value of specified Entry
+	 */
+	public String getValue(int i) {
+		return heapArray[i].getAddress();
+	}
+	
+	/**
+	 * Returns key(A[i]), where A is the array used to represent the priority queue
+	 * @param i index of Entry that holds the returned key
+	 * @return key of specified Entry
+	 */
+	public int getKey(int i) {
+		return heapArray[i].getPriority();
+	}
+	
+	/**
+	 * Returns true if and only if the queue is empty
+	 * @return whether the queue is empty
+	 */
+	public boolean isEmpty() {
+		return heapSize == 0;
+	}
+	
+	private void heapify(int i) {
+		//TODO
+		int max = i;
+		int left = 2*i + 1;
+		int right = 2*i + 2;
 	}
 	
 	/**
