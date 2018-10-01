@@ -26,12 +26,7 @@ public class PriorityQ {
 			return heapSize;
 		}
 	
-	/**
-	 * @return if heap is empty
-	 */
-	public boolean isEmpty(){
-		return heapSize == 0;
-	}
+
 	
 	/**
 	 * Adds a String s with priority p to the priority queue.
