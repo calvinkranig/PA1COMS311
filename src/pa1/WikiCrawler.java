@@ -1,6 +1,8 @@
 package pa1;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.net.*;
 
 /**
@@ -9,14 +11,11 @@ import java.net.*;
  * @author ckranig, ans66
  *
  */
-
-/**
- * @author pols_ckranig
- *
- */
 public class WikiCrawler {
 	
 	public static final String BASE_URL = "https://en.wikipedia.org";
+	private Set<String> visitedpages;
+	private PriorityQ pagesToVisit;
 	
 	private String seed;
 	private int max;
@@ -37,6 +36,8 @@ written.
 		this.max = max;
 		this.topics = topics;
 		this.output = output;
+		visitedpages = new HashSet<String>();
+		pagesToVisit = new PriorityQ();
 	}
 	
 	/**
@@ -78,6 +79,31 @@ output le.
 	 */
 	public void crawl(boolean focused){
 		
+	}
+	
+	/**
+	 * 
+	 * TO DO Still need to look at exact url path for each entry
+	 * @return the next url to crawl
+	 */
+	private String nextURL(){
+		String nextURL = this.BASE_URL;
+		
+		if(this.pagesToVisit.isEmpty()){
+			return null;
+		}
+		
+		nextURL = this.pagesToVisit.extractMax();
+		
+		while(this.visitedpages.contains(nextURL)){
+			if(this.pagesToVisit.isEmpty()){ //Check to see if we can not check this every time
+				return null;
+			}
+			nextURL =this.pagesToVisit.extractMax();
+		}
+		
+		this.visitedpages.add(nextURL);
+		return nextURL;
 	}
 	
 	
