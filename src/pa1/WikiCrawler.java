@@ -2,6 +2,7 @@ package pa1;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.net.*;
 
@@ -78,8 +79,23 @@ output le.
 	 * @param focused
 	 */
 	public void crawl(boolean focused){
+		if(focused){
+			focusedcrawlhelper();
+		}
+		else{
+			unfocusedcrawlhelper();
+		}
+	}
+	
+	public void unfocusedcrawlhelper(){
+		//need to use fifo queue
+	}
+	
+	public void focusedcrawlhelper(){
 		
 	}
+	
+	
 	
 	/**
 	 * 
