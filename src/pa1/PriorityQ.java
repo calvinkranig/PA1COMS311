@@ -2,7 +2,7 @@ package pa1;
 
 /**
  * 
- * @author Alexander Stephens and Calvin Kranig
+ * @author ckranig, ans66
  *Class for representing a Priority Queue.
  */
 public class PriorityQ {
@@ -16,6 +16,21 @@ public class PriorityQ {
 	public PriorityQ() {
 		heapArray = new Entry[201]; // pretty sure the max # of strings is 200
 		heapSize = 0; // new priQ has no size
+	}
+	
+	
+	 /**
+	 * @return size of the heap
+	 */
+	public int getSize(){
+			return heapSize;
+		}
+	
+	/**
+	 * @return if heap is empty
+	 */
+	public boolean isEmpty(){
+		return heapSize == 0;
 	}
 	
 	/**
