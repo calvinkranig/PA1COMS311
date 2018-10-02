@@ -64,7 +64,11 @@ public class PriorityQ implements Queue{
 	public String extractMax() {
 		String max = this.returnMax();
 		
-		//TODO
+		swap(1, this.getSize());
+		heapSize--;
+		
+		this.heapify(1);
+		
 		return max;
 	}
 	
@@ -180,7 +184,7 @@ public class PriorityQ implements Queue{
 
 	@Override
 	public void add(String s) throws Exception {
-		throw new Exception();
+		throw new Exception("you need a priority to add to the priority queue, nerd");
 		
 	}
 
