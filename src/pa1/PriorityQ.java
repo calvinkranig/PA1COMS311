@@ -1,5 +1,7 @@
 package pa1;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author ckranig, ans66
@@ -7,14 +9,14 @@ package pa1;
  */
 public class PriorityQ {
 	
-	private Entry[] heapArray;
+	private ArrayList<Entry> heapArray;
 	private int heapSize;
 	
 	/**
 	 * Creates an empty priority queue.
 	 */
 	public PriorityQ() {
-		heapArray = new Entry[201]; // pretty sure the max # of strings is 200
+		heapArray = new ArrayList<Entry>(); // pretty sure the max # of strings is 200
 		heapSize = 0; // new priQ has no size
 	}
 	
@@ -38,13 +40,13 @@ public class PriorityQ {
 		Entry e = new Entry(s, p); // encapsulate the string and priority into an Entry
 		
 		int position = ++heapSize; //start position at the end of the heap
-		heapArray[position] = e; // put the new entry at the end of the heap
+		heapArray.set(position, e); // put the new entry at the end of the heap
 		
-		while(position != 1 && p > heapArray[position/2].getPriority()) { // while the position isn't 1 and the priority of the new entry is greater than its parent
-			heapArray[position] = heapArray[position/2]; // move the parent down the heap
+		while(position != 1 && p > heapArray.get(position / 2).getPriority()) { // while the position isn't 1 and the priority of the new entry is greater than its parent
+			heapArray.set(position, heapArray.get(position / 2)); // move the parent down the heap
 			position /= 2; // the position moves to the parent
 		}
-		heapArray[position] = e; // assign the new entry at the index of the final position
+		heapArray.set(position, e); // assign the new entry at the index of the final position
 	}
 	
 	/**
@@ -52,7 +54,7 @@ public class PriorityQ {
 	 * @return String with max priority.
 	 */
 	public String returnMax() {
-		return heapArray[1].getAddress(); // highest priority is at the top of the heap
+		return heapArray.get(1).getAddress(); // highest priority is at the top of the heap
 	}
 	
 	/**
@@ -91,7 +93,7 @@ public class PriorityQ {
 		
 		int[] priArr = new int[heapSize]; // create array for the priorities
 		for(int i = 0; i < heapSize; ++i) { // for all Entries in the heapArray, enter their priorities into the priArr
-			priArr[i] = heapArray[i].getPriority();
+			priArr[i] = heapArray.get(i).getPriority();
 		}
 		return priArr;
 	}
@@ -102,7 +104,7 @@ public class PriorityQ {
 	 * @return value of specified Entry
 	 */
 	public String getValue(int i) {
-		return heapArray[i].getAddress();
+		return heapArray.get(i).getAddress();
 	}
 	
 	/**
@@ -111,7 +113,7 @@ public class PriorityQ {
 	 * @return key of specified Entry
 	 */
 	public int getKey(int i) {
-		return heapArray[i].getPriority();
+		return heapArray.get(i).getPriority();
 	}
 	
 	/**
@@ -128,11 +130,11 @@ public class PriorityQ {
 		int left = 2*i + 1;
 		int right = 2*i + 2;
 		
-		if((left < heapSize) && (heapArray[i].getPriority() < heapArray[left].getPriority())) {
+		if((left < heapSize) && (heapArray.get(i).getPriority() < heapArray.get(i).getPriority())) {
 			largest = left;
 		}
 		
-		if((right < heapSize) && (heapArray[largest].getPriority() < heapArray[right].getPriority())) {
+		if((right < heapSize) && (heapArray.get(largest).getPriority() < heapArray.get(right).getPriority())) {
 			largest = right;
 		}
 		
@@ -148,9 +150,9 @@ public class PriorityQ {
 	 * @param j index of second Entry to swap
 	 */
 	private void swap(int i, int j) {
-		Entry temp = heapArray[i];
-		heapArray[i] = heapArray[j];
-		heapArray[j] = temp;
+		Entry temp = heapArray.get(i);
+		heapArray.set(i, heapArray.get(j));
+		heapArray.set(j, temp);
 	}
 	
 	/**
