@@ -1,9 +1,12 @@
 package pa1;
 
 import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.*;
 
 /**
@@ -14,10 +17,46 @@ import java.net.*;
  */
 public class WikiCrawler {
 	
+	public static class PageParser {
+		
+		public static List<String> extractLinks(String document){
+			int start = document.indexOf("<p>");
+			int end = document.indexOf("This page was last edited");
+			
+			int tmp = document.indexOf("/wiki/", start);
+			return null;
+		}
+		
+		
+		
+		public static String getPage(String urlString){
+			try {
+				URL url = new URL(urlString);
+				URLConnection conn = url.openConnection();
+				InputStream is = conn.g;
+				String inputline = "";
+				while((inputline= is.read())!=null){
+					
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			
+			return null;
+		}
+		
+		
+
+	}
+	
 	public static final String BASE_URL = "https://en.wikipedia.org";
 	private Set<String> visitedpages;
 	private Queue pagesToVisit;
-	
+	private Set<String> pagesToVisitSet;
 	private String seed;
 	private int max;
 	String[] topics;
@@ -78,6 +117,7 @@ output le.
 	 */
 	public void crawl(boolean focused){
 		visitedpages = new HashSet<String>();
+		pagesToVisitSet = new HashSet<String>();
 		if(focused){
 			focusedcrawlhelper();
 		}
@@ -87,6 +127,15 @@ output le.
 	}
 	
 	public void unfocusedcrawlhelper(){
+		int pagesvisited = 0;
+		while(visitedpages.size()<200){
+			if(pagesvisited >= 30){
+				//rest
+			}
+			String url = BASE_URL + this.nextURL();
+			String webpage = PageParser.getPage(url);
+			
+		}
 		//need to use fifo queue
 	}
 	
@@ -99,6 +148,8 @@ output le.
 	/**
 	 * 
 	 * TO DO Still need to look at exact url path for each entry
+	 * 
+	 * This method assumes that all of the pages in the pages to visit are not duplicates and do not exist in visited pages
 	 * @return the next url to crawl
 	 */
 	private String nextURL(){
@@ -109,14 +160,6 @@ output le.
 		}
 		
 		nextURL = this.pagesToVisit.extractMax();
-		
-		while(this.visitedpages.contains(nextURL)){
-			if(this.pagesToVisit.isEmpty()){ //Check to see if we can not check this every time
-				return null;
-			}
-			nextURL =this.pagesToVisit.extractMax();
-		}
-		
 		this.visitedpages.add(nextURL);
 		return nextURL;
 		
