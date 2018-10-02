@@ -16,7 +16,7 @@ public class WikiCrawler {
 	
 	public static final String BASE_URL = "https://en.wikipedia.org";
 	private Set<String> visitedpages;
-	private PriorityQ pagesToVisit;
+	private Queue pagesToVisit;
 	
 	private String seed;
 	private int max;
@@ -37,8 +37,6 @@ written.
 		this.max = max;
 		this.topics = topics;
 		this.output = output;
-		visitedpages = new HashSet<String>();
-		pagesToVisit = new PriorityQ();
 	}
 	
 	/**
@@ -79,6 +77,7 @@ output le.
 	 * @param focused
 	 */
 	public void crawl(boolean focused){
+		visitedpages = new HashSet<String>();
 		if(focused){
 			focusedcrawlhelper();
 		}
@@ -120,6 +119,8 @@ output le.
 		
 		this.visitedpages.add(nextURL);
 		return nextURL;
+		
+		
 	}
 	
 	
