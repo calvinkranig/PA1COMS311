@@ -17,6 +17,7 @@ public class PriorityQ implements Queue{
 	 */
 	public PriorityQ() {
 		heapArray = new ArrayList<Entry>(); // pretty sure the max # of strings is 200
+		heapArray.add(null);
 		heapSize = 0; // new priQ has no size
 	}
 	
@@ -40,7 +41,7 @@ public class PriorityQ implements Queue{
 		Entry e = new Entry(s, p); // encapsulate the string and priority into an Entry
 		
 		int position = ++heapSize; //start position at the end of the heap
-		heapArray.set(position, e); // put the new entry at the end of the heap
+		heapArray.add(position, e); // put the new entry at the end of the heap
 		
 		while(position != 1 && p > heapArray.get(position / 2).getPriority()) { // while the position isn't 1 and the priority of the new entry is greater than its parent
 			heapArray.set(position, heapArray.get(position / 2)); // move the parent down the heap
@@ -193,6 +194,12 @@ public class PriorityQ implements Queue{
 	public void add(String s) throws Exception {
 		throw new Exception("you need a priority to add to the priority queue, nerd");
 		
+	}
+	
+	protected void printQueue() {
+		for(int i = 0; i < heapSize; ++i) {
+			System.out.println(heapArray.get(i));
+		}
 	}
 
 
