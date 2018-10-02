@@ -20,6 +20,7 @@ public class PriorityQ {
 	
 	
 	 /**
+	 * Accessor for getting the size of the heap
 	 * @return size of the heap
 	 */
 	public int getSize(){
@@ -122,26 +123,39 @@ public class PriorityQ {
 	}
 	
 	private void heapify(int i) {
-		//TODO
-		int max = i;
+
+		int largest = i;
 		int left = 2*i + 1;
 		int right = 2*i + 2;
+		
+		if((left < heapSize) && (heapArray[i].getPriority() < heapArray[left].getPriority())) {
+			largest = left;
+		}
+		
+		if((right < heapSize) && (heapArray[largest].getPriority() < heapArray[right].getPriority())) {
+			largest = right;
+		}
+		
+		if (largest != i) {
+			swap(i, largest);
+			heapify(largest);
+		}
 	}
 	
 	/**
 	 * Helper method used for swapping entries
-	 * @param e1 First Entry to swap
-	 * @param e2 Second Entry to swap
+	 * @param i index of first Entry to swap
+	 * @param j index of second Entry to swap
 	 */
-	private static void swap(Entry e1, Entry e2) {
-		Entry temp = e1;
-		e1 = e2;
-		e2 = temp;
+	private void swap(int i, int j) {
+		Entry temp = heapArray[i];
+		heapArray[i] = heapArray[j];
+		heapArray[j] = temp;
 	}
 	
 	/**
 	 * Private Class to encapsulate the address string and int priority into an Entry
-	 * @author Alexander Stephens
+	 * @author ans66, ckranig
 	 *
 	 */
 	private class Entry{
