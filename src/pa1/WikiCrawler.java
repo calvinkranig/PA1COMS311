@@ -25,6 +25,7 @@ public class WikiCrawler {
 			
 			int tmp = document.indexOf("/wiki/", start);
 			return null;
+			
 		}
 		
 		
