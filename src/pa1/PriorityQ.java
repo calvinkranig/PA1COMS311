@@ -62,14 +62,14 @@ public class PriorityQ implements Queue{
 	 * @return Maximum, extracted String.
 	 */
 	public String extractMax() {
-		String max = this.returnMax();
+		String max = this.returnMax(); // save string for the return
 		
-		swap(1, this.getSize());
-		heapSize--;
+		swap(1, this.getSize()); // swap the first and last elements in the heap
+		heapSize--; // decrement heap
 		
-		this.heapify(1);
+		this.heapify(1); // heapify top element of heap
 		
-		return max;
+		return max; // return old max
 	}
 	
 	/**
@@ -77,7 +77,9 @@ public class PriorityQ implements Queue{
 	 * @param i Index of element in array to be removed.
 	 */
 	public void remove(int i) {
-		//TODO
+		
+		swap(i, this.getSize()); // swap removed element with last element
+		this.heapify(i); // heapify swapped element
 	}
 	
 	/**
@@ -87,6 +89,11 @@ public class PriorityQ implements Queue{
 	 */
 	public void decrementPriority(int i, int k) {
 		//TODO
+		String s = heapArray.get(i).getAddress(); // copy address of entry to be decremented
+		int p = heapArray.get(i).getPriority() - k; // new priority
+		
+		remove(i); // remove entry with old priority
+		add(s, p); // add same entry with updated priority
 	}
 	
 	/**
