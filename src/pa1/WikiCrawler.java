@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -30,15 +31,23 @@ public class WikiCrawler {
 		
 		
 		
+		/**
+		 * Method for getting html of a given page
+		 * 
+		 * @param urlString: url of page
+		 * @return html string of entire page
+		 */
 		public static String getPage(String urlString){
 			try {
 				URL url = new URL(urlString);
 				URLConnection conn = url.openConnection();
-				InputStream is = conn.g;
+				BufferedReader breader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 				String inputline = "";
-				while((inputline= is.read())!=null){
-					
+				StringBuilder output = new StringBuilder();
+				while((inputline = breader.readLine())!= null){
+					output.append(inputline);
 				}
+				return output.toString();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
