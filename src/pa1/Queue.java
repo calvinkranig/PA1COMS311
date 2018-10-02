@@ -1,9 +1,10 @@
 package pa1;
 
 public interface Queue {
-	int getsize();
-	void add();
-	String returnMax();
-	boolean isEmpty();
-	String extractMax();
+	public int getSize();
+	public void add(String s) throws Exception;
+	public String returnMax();
+	public boolean isEmpty();
+	public String extractMax();
+	
 }

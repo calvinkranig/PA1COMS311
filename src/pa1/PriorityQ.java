@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author ckranig, ans66
  *Class for representing a Priority Queue.
  */
-public class PriorityQ {
+public class PriorityQ implements Queue{
 	
 	private ArrayList<Entry> heapArray;
 	private int heapSize;
@@ -177,4 +177,15 @@ public class PriorityQ {
 			return address;
 		}
 	}
+
+	@Override
+	public void add(String s) throws Exception {
+		throw new Exception();
+		
+	}
+
+
+
+
+
 }
