@@ -6,8 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.*;
 
 /**
@@ -18,6 +22,12 @@ import java.net.*;
  */
 public class WikiCrawler {
 	
+	/**
+	 * 
+	 * 
+	 * @author ckranig, ans66
+	 *
+	 */
 	public static class PageParser {
 		
 		private static boolean validString(String s, HashSet<String> links, String page){
@@ -86,7 +96,6 @@ public class WikiCrawler {
 	public static final String BASE_URL = "https://en.wikipedia.org";
 	private Set<String> visitedpages;
 	private Queue pagesToVisit;
-	private Set<String> pagesToVisitSet;
 	private String seed;
 	private int max;
 	String[] topics;
@@ -98,7 +107,7 @@ public class WikiCrawler {
 	 * @param max : maximum number of pages to consider
 	 * @param topics : array of strings representing keywords in a topic-list
 	 * @param output : string representing the lename where the web graph over discovered pages are
-written.
+		written.
 	 */
 	public WikiCrawler(String seed, int max, String[] topics, String output) {
 		super();
@@ -158,30 +167,61 @@ output le.
 	 */
 	public void crawl(boolean focused){
 		visitedpages = new HashSet<String>();
-		pagesToVisitSet = new HashSet<String>();
+		
 		if(focused){
-			focusedcrawlhelper();
+			focusedCrawlHelper();
 		}
-		else{
+		else if(this.topics.length<1){
 			unfocusedcrawlhelper();
 		}
+		else{
+			unfocusedCrawlHelperWithTopics();
+		}
+	}
+	
+	
+	public void unfocusedCrawlHelperWithTopics(){
+		
+	}
+	
+	public void focusedCrawlHelper(){
+		
 	}
 	
 	public void unfocusedcrawlhelper(){
 		int pagesvisited = 0;
-		while(visitedpages.size()<200){
+		this.pagesToVisit = new FIFOQ();
+		this.pagesToVisit.add(seed);
+		String nexturl = null;
+		
+		try{
+		FileWriter fw = new FileWriter(output, true);
+		BufferedWriter bw = new BufferedWriter(fw);
+		PrintWriter out = new PrintWriter(bw);
+		
+		while(visitedpages.size()<this.max&& !(nexturl = this.nextURL()).equals(null)){
+			 
+			String webpage = PageParser.getPage(BASE_URL + nexturl);
+			ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
+			//write edges to output
+			writeToOutput(links, out, nexturl);
+			//Add edges to edges to visit
 			if(pagesvisited >= 30){
-				//rest
+				pagesvisited = 0;
 			}
-			String url = BASE_URL + this.nextURL();
-			String webpage = PageParser.getPage(url);
-			
 		}
-		//need to use fifo queue
+		}catch(IOException e){
+			System.out.println(e.getMessage());
+		}
+		
 	}
 	
-	public void focusedcrawlhelper(){
-		
+
+	
+	private void writeToOutput(ArrayList<String> links, PrintWriter out, String currentURL){
+		for(String link: links){
+			out.println(currentURL + " " + link );
+		}
 	}
 	
 	
@@ -190,21 +230,22 @@ output le.
 	 * 
 	 * TO DO Still need to look at exact url path for each entry
 	 * 
-	 * This method assumes that all of the pages in the pages to visit are not duplicates and do not exist in visited pages
-	 * @return the next url to crawl
+	 * This method assumes that there are pages to visit
+	 * 
+	 * @return the next url to crawl and add next url to visited pages
 	 */
 	private String nextURL(){
-		String nextURL = this.BASE_URL;
-		
 		if(this.pagesToVisit.isEmpty()){
 			return null;
 		}
 		
-		nextURL = this.pagesToVisit.extractMax();
+		String nextURL = "";
+		//extract max and see if it was already visited
+		while(!(nextURL = this.pagesToVisit.extractMax()).equals(null) && this.visitedpages.contains(nextURL)){}
+			
+		
 		this.visitedpages.add(nextURL);
 		return nextURL;
-		
-		
 	}
 	
 	

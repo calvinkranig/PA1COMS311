@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 
+/**
+ * @author ckranig, ans66
+ *
+ */
 public class FIFOQ implements Queue{
 	
 	private LinkedList<String> queue;
@@ -19,7 +23,7 @@ public class FIFOQ implements Queue{
 	}
 
 	@Override
-	public void add(String s) throws Exception {
+	public void add(String s) {
 		// TODO Auto-generated method stub
 		queue.add(s);
 		
@@ -34,7 +38,9 @@ public class FIFOQ implements Queue{
 	@Override
 	public String extractMax() {
 		// TODO Auto-generated method stub
-		
+		if(this.isEmpty()){
+			return null;
+		}
 		return queue.removeFirst();
 	}
 

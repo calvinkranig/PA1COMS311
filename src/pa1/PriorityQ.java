@@ -55,6 +55,9 @@ public class PriorityQ implements Queue{
 	 * @return String with max priority.
 	 */
 	public String returnMax() {
+		if(this.isEmpty()){
+			return null;
+		}
 		return heapArray.get(1).getAddress(); // highest priority is at the top of the heap
 	}
 	
@@ -62,9 +65,11 @@ public class PriorityQ implements Queue{
 	 * Returns a String whose priority is maximum and removes it from the priority queue.
 	 * @return Maximum, extracted String.
 	 */
-	public String extractMax() {
+	public String extractMax() {	
+		if(this.isEmpty()){
+			return null;
+		}
 		String max = this.returnMax(); // save string for the return
-		
 		swap(1, this.getSize()); // swap the first and last elements in the heap
 		heapSize--; // decrement heap
 		
@@ -190,10 +195,10 @@ public class PriorityQ implements Queue{
 		}
 	}
 
+	
 	@Override
-	public void add(String s) throws Exception {
-		throw new Exception("you need a priority to add to the priority queue, nerd");
-		
+	public void add(String s){
+		System.out.println("Need a Precedence");
 	}
 	
 	protected void printQueue() {
