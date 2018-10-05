@@ -28,7 +28,7 @@ public class WikiCrawler {
 	 * @author ckranig, ans66
 	 *
 	 */
-	public static class PageParser {
+	private static class PageParser {
 		
 		private static boolean validString(String s, HashSet<String> links, String page){
 			if(s.equals(page)||links.contains(s) ||s.contains("#")|| s.contains(":")){
@@ -37,7 +37,7 @@ public class WikiCrawler {
 			return true;
 		}
 		
-		public static ArrayList<String> extractLinks(String document, String pageurl){
+		private static ArrayList<String> extractLinks(String document, String pageurl){
 			ArrayList<String> links = new ArrayList<String>();
 			HashSet<String> hlinks = new HashSet<String>();
 			//have to look and see if we need to look for <P> as well
@@ -67,7 +67,7 @@ public class WikiCrawler {
 		 * @param urlString: url of page
 		 * @return html string of entire page
 		 */
-		public static String getPage(String urlString){
+		private static String getPage(String urlString){
 			try {
 				URL url = new URL(urlString);
 				URLConnection conn = url.openConnection();
@@ -180,15 +180,15 @@ output le.
 	}
 	
 	
-	public void unfocusedCrawlHelperWithTopics(){
+	private void unfocusedCrawlHelperWithTopics(){
 		
 	}
 	
-	public void focusedCrawlHelper(){
+	private void focusedCrawlHelper(){
 		
 	}
 	
-	public void unfocusedcrawlhelper(){
+	private void unfocusedcrawlhelper(){
 		int pagesvisited = 0;
 		this.pagesToVisit = new FIFOQ();
 		this.pagesToVisit.add(seed);
@@ -206,17 +206,24 @@ output le.
 			//write edges to output
 			writeToOutput(links, out, nexturl);
 			//Add edges to edges to visit
-			if(pagesvisited >= 30){
+			for(String link:links){
+				this.pagesToVisit.add(link);
+			}
+			
+			
+			if(pagesvisited >= 20){
+				Thread.sleep(3000);
 				pagesvisited = 0;
 			}
 		}
-		}catch(IOException e){
+		}catch(IOException | InterruptedException e){
 			System.out.println(e.getMessage());
 		}
 		
 	}
 	
-
+	
+	
 	
 	private void writeToOutput(ArrayList<String> links, PrintWriter out, String currentURL){
 		for(String link: links){
