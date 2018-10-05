@@ -20,12 +20,30 @@ public class WikiCrawler {
 	
 	public static class PageParser {
 		
-		public static List<String> extractLinks(String document){
+		private static boolean validString(String s, HashSet<String> links, String page){
+			if(s.equals(page)||links.contains(s) ||s.contains("#")|| s.contains(":")){
+				return false;
+			}
+			return true;
+		}
+		
+		public static ArrayList<String> extractLinks(String document, String pageurl){
+			ArrayList<String> links = new ArrayList<String>();
+			HashSet<String> hlinks = new HashSet<String>();
+			//have to look and see if we need to look for <P> as well
 			int start = document.indexOf("<p>");
-			int end = document.indexOf("This page was last edited");
-			
 			int tmp = document.indexOf("/wiki/", start);
-			return null;
+			
+			while(tmp != -1){
+				start = document.indexOf("\"", tmp);
+				String substring = document.substring(tmp, start);
+				if(validString(substring,hlinks, pageurl)){
+					links.add(substring);
+					hlinks.add(substring);
+				}
+				tmp = document.indexOf("/wiki/", start);
+			}
+			return links;
 			
 		}
 		
@@ -33,6 +51,8 @@ public class WikiCrawler {
 		
 		/**
 		 * Method for getting html of a given page
+		 * 
+		 * check to see if example in programming assignment works better
 		 * 
 		 * @param urlString: url of page
 		 * @return html string of entire page
@@ -98,13 +118,24 @@ method must
 (d) The order in which the links in the returned array list must be exactly the same order
 in which they appear in the document
 
+This is use for specification purposes only. Real extract links looks to see if link is already been extracted, 
+and that it does not refer to the current page.
 	 * @param document
-	 * @return
+	 * @return list of links
 	 */
 	public ArrayList<String> extractLinks(String document){
 		ArrayList<String> links = new ArrayList<String>();
+		int start = document.indexOf("<p>");
+		int tmp = document.indexOf("/wiki/", start);
 		
-		
+		while(tmp != -1){
+			start = document.indexOf("\"", tmp);
+			String substring = document.substring(tmp, start);
+			if(!substring.contains(":")||!substring.contains("#")){
+				links.add(substring);
+			}
+			tmp = document.indexOf("/wiki/", start);
+		}
 		return links;
 	}
 	
