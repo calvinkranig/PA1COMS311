@@ -23,7 +23,7 @@ public class FIFOQ implements Queue{
 	}
 
 	@Override
-	public void add(String s) {
+	public void add(String s , int i) {
 		// TODO Auto-generated method stub
 		queue.add(s);
 		

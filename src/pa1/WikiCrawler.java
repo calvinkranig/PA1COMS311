@@ -57,6 +57,23 @@ public class WikiCrawler {
 			
 		}
 		
+		private static int getPageRelevance(String page, String[] topics){
+			int count = 0;
+			for(int i = 0; i<topics.length; i++){
+				int start = page.indexOf("<p>");
+				int tmp = page.indexOf(topics[i], start);
+				if(tmp ==-1){
+					return -1;
+				}
+				while(tmp != -1){
+					count ++;
+					start = tmp;
+					tmp = page.indexOf(topics[i], start);
+				}
+			}
+			return count;
+		}
+		
 		
 		
 		/**
@@ -181,17 +198,79 @@ output le.
 	
 	
 	private void unfocusedCrawlHelperWithTopics(){
+		int pagesvisited = 0;
+		this.pagesToVisit = new FIFOQ();
+		this.pagesToVisit.add(seed, 0);
+		String nexturl = null;
 		
+		try{
+			FileWriter fw = new FileWriter(output, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			PrintWriter out = new PrintWriter(bw);
+			
+			while(visitedpages.size()<this.max&& !(nexturl = this.nextURL()).equals(null)){
+				String webpage = PageParser.getPage(BASE_URL + nexturl);
+				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
+				//write edges to output
+				writeToOutput(links, out, nexturl);
+				//Add edges to edges to visit
+				for(String link:links){
+					int priority = PageParser.getPageRelevance(PageParser.getPage(BASE_URL + link), this.topics);
+					if(priority > -1){
+						this.pagesToVisit.add(link, priority);
+					}
+				}
+				
+				
+				if(pagesvisited >= 20){
+					Thread.sleep(3000);
+					pagesvisited = 0;
+				}
+			}
+			}catch(IOException | InterruptedException e){
+				System.out.println(e.getMessage());
+			}
 	}
 	
 	private void focusedCrawlHelper(){
+		int pagesvisited = 0;
+		this.pagesToVisit = new PriorityQ();
+		this.pagesToVisit.add(seed, 0);
+		String nexturl = null;
 		
+		try{
+			FileWriter fw = new FileWriter(output, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			PrintWriter out = new PrintWriter(bw);
+			
+			while(visitedpages.size()<this.max&& !(nexturl = this.nextURL()).equals(null)){
+				String webpage = PageParser.getPage(BASE_URL + nexturl);
+				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
+				//write edges to output
+				writeToOutput(links, out, nexturl);
+				//Add edges to edges to visit
+				for(String link:links){
+					int priority = PageParser.getPageRelevance(PageParser.getPage(BASE_URL + link), this.topics);
+					if(priority > -1){
+						this.pagesToVisit.add(link, priority);
+					}
+				}
+				
+				
+				if(pagesvisited >= 20){
+					Thread.sleep(3000);
+					pagesvisited = 0;
+				}
+			}
+			}catch(IOException | InterruptedException e){
+				System.out.println(e.getMessage());
+			}
 	}
 	
 	private void unfocusedcrawlhelper(){
 		int pagesvisited = 0;
 		this.pagesToVisit = new FIFOQ();
-		this.pagesToVisit.add(seed);
+		this.pagesToVisit.add(seed, 0);
 		String nexturl = null;
 		
 		try{
@@ -207,7 +286,7 @@ output le.
 			writeToOutput(links, out, nexturl);
 			//Add edges to edges to visit
 			for(String link:links){
-				this.pagesToVisit.add(link);
+				this.pagesToVisit.add(link, 0);
 			}
 			
 			

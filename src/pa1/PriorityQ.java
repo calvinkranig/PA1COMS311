@@ -60,6 +60,13 @@ public class PriorityQ implements Queue{
 		}
 		return heapArray.get(1).getAddress(); // highest priority is at the top of the heap
 	}
+	/*
+	public String returnMaxDocument(){
+		if(this.isEmpty()){
+			return null;
+		}
+		return heapArray.get(1).getDocument();
+	}*/
 	
 	/**
 	 * Returns a String whose priority is maximum and removes it from the priority queue.
@@ -97,7 +104,7 @@ public class PriorityQ implements Queue{
 		//TODO
 		String s = heapArray.get(i).getAddress(); // copy address of entry to be decremented
 		int p = heapArray.get(i).getPriority() - k; // new priority
-		
+	
 		remove(i); // remove entry with old priority
 		add(s, p); // add same entry with updated priority
 	}
@@ -177,11 +184,11 @@ public class PriorityQ implements Queue{
 	 * @author ans66, ckranig
 	 *
 	 */
-	private class Entry{
+	protected class Entry{
 		private String address;
 		private int priority;
 		
-		protected Entry(String address, int priority) {
+		private Entry(String address, int priority) {
 			this.address = address;
 			this.priority = priority;
 		}
@@ -195,11 +202,11 @@ public class PriorityQ implements Queue{
 		}
 	}
 
-	
+	/*
 	@Override
-	public void add(String s){
+	public void add(String s,){
 		System.out.println("Need a Precedence");
-	}
+	}*/
 	
 	protected void printQueue() {
 		for(int i = 0; i < heapSize; ++i) {
