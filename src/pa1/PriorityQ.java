@@ -92,6 +92,7 @@ public class PriorityQ implements Queue{
 	public void remove(int i) {
 		
 		swap(i, this.getSize()); // swap removed element with last element
+		heapSize--; // decrement heap
 		this.heapify(i); // heapify swapped element
 	}
 	
@@ -151,14 +152,14 @@ public class PriorityQ implements Queue{
 	private void heapify(int i) {
 
 		int largest = i;
-		int left = 2*i + 1;
-		int right = 2*i + 2;
+		int left = 2*i;
+		int right = 2*i + 1;
 		
-		if((left < heapSize) && (heapArray.get(i).getPriority() < heapArray.get(i).getPriority())) {
+		if((left <= heapSize) && (heapArray.get(largest).getPriority() < heapArray.get(left).getPriority())) {
 			largest = left;
 		}
 		
-		if((right < heapSize) && (heapArray.get(largest).getPriority() < heapArray.get(right).getPriority())) {
+		if((right <= heapSize) && (heapArray.get(largest).getPriority() < heapArray.get(right).getPriority())) {
 			largest = right;
 		}
 		
@@ -212,6 +213,15 @@ public class PriorityQ implements Queue{
 		for(int i = 0; i < heapSize; ++i) {
 			System.out.println(heapArray.get(i));
 		}
+	}
+	
+	protected String queueString() {
+		String s = "";
+		int n = heapSize;
+		for(int i = 0; i < n; ++i) {
+			s += this.extractMax() + ", ";
+		}
+		return s;
 	}
 
 
