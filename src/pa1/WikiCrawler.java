@@ -110,20 +110,20 @@ public class WikiCrawler {
 
 	}
 	
-	public static final String BASE_URL = "https://en.wikipedia.org";
+	public static final String BASE_URL = "http://web.cs.iastate.edu/~pavan";
 	private Set<String> visitedpages;
 	private Queue pagesToVisit;
 	private String seed;
 	private int max;
-	String[] topics;
-	String output;
+	private String[] topics;
+	private String output;
 	
 	/**
 	 * 
 	 * @param seed : String variable related address of seed URL (within wiki domain)
 	 * @param max : maximum number of pages to consider
 	 * @param topics : array of strings representing keywords in a topic-list
-	 * @param output : string representing the lename where the web graph over discovered pages are
+	 * @param output : string representing the filename where the web graph over discovered pages are
 		written.
 	 */
 	public WikiCrawler(String seed, int max, String[] topics, String output) {
