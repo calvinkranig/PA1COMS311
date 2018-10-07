@@ -110,7 +110,7 @@ public class WikiCrawler {
 
 	}
 	
-	public static final String BASE_URL = "http://web.cs.iastate.edu/~pavan";
+	public static final String BASE_URL = "https://en.wikipedia.org";
 	private Set<String> visitedpages;
 	private Queue pagesToVisit;
 	private String seed;
@@ -208,7 +208,7 @@ output le.
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter out = new PrintWriter(bw);
 			
-			while(visitedpages.size()<this.max&& !(nexturl = this.nextURL()).equals(null)){
+			while(visitedpages.size()<this.max&& (nexturl = this.nextURL())!=null){
 				String webpage = PageParser.getPage(BASE_URL + nexturl);
 				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
 				//write edges to output
@@ -227,6 +227,9 @@ output le.
 					pagesvisited = 0;
 				}
 			}
+			out.close();
+			bw.close();
+			fw.close();
 			}catch(IOException | InterruptedException e){
 				System.out.println(e.getMessage());
 			}
@@ -243,7 +246,7 @@ output le.
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter out = new PrintWriter(bw);
 			
-			while(visitedpages.size()<this.max&& !(nexturl = this.nextURL()).equals(null)){
+			while(visitedpages.size()<this.max&& (nexturl = this.nextURL())!=null){
 				String webpage = PageParser.getPage(BASE_URL + nexturl);
 				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
 				//write edges to output
@@ -262,6 +265,9 @@ output le.
 					pagesvisited = 0;
 				}
 			}
+			out.close();
+			bw.close();
+			fw.close();
 			}catch(IOException | InterruptedException e){
 				System.out.println(e.getMessage());
 			}
@@ -271,14 +277,14 @@ output le.
 		int pagesvisited = 0;
 		this.pagesToVisit = new FIFOQ();
 		this.pagesToVisit.add(seed, 0);
-		String nexturl = null;
+		String nexturl = this.nextURL();
 		
 		try{
 		FileWriter fw = new FileWriter(output, true);
 		BufferedWriter bw = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(bw);
 		
-		while(visitedpages.size()<this.max&& !(nexturl = this.nextURL()).equals(null)){
+		while(nexturl != null&&visitedpages.size()<this.max){
 			 
 			String webpage = PageParser.getPage(BASE_URL + nexturl);
 			ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
@@ -294,10 +300,16 @@ output le.
 				Thread.sleep(3000);
 				pagesvisited = 0;
 			}
+			
+			nexturl = this.nextURL();
 		}
+		out.close();
+		bw.close();
+		fw.close();
 		}catch(IOException | InterruptedException e){
 			System.out.println(e.getMessage());
 		}
+		
 		
 	}
 	
@@ -325,11 +337,14 @@ output le.
 			return null;
 		}
 		
-		String nextURL = "";
+		String nextURL = this.pagesToVisit.extractMax();
 		//extract max and see if it was already visited
-		while(!(nextURL = this.pagesToVisit.extractMax()).equals(null) && this.visitedpages.contains(nextURL)){}
-			
-		
+		while(this.visitedpages.contains(nextURL)){
+			if(pagesToVisit.isEmpty()){
+				return null;
+			}
+			nextURL = pagesToVisit.extractMax();
+		}
 		this.visitedpages.add(nextURL);
 		return nextURL;
 	}
