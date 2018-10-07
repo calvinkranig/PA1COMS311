@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * 
  * @author ckranig, ans66
- *Class for representing a Priority Queue.
+ *Class for representing a Priority Queue. All methods with an index argument need to keep in mind that the heapArray starts at 1.
  */
 public class PriorityQ implements Queue{
 	
@@ -149,6 +149,10 @@ public class PriorityQ implements Queue{
 		return heapSize == 0;
 	}
 	
+	/**
+	 * Helper method to maintain heap properties after a remove.
+	 * @param i Index at which to begin heapify.
+	 */
 	private void heapify(int i) {
 
 		int largest = i;
@@ -208,13 +212,11 @@ public class PriorityQ implements Queue{
 	public void add(String s,){
 		System.out.println("Need a Precedence");
 	}*/
-	
-	protected void printQueue() {
-		for(int i = 0; i < heapSize; ++i) {
-			System.out.println(heapArray.get(i));
-		}
-	}
-	
+
+	/**
+	 * Helper method to create a string with all of the strings in the queue. Ordered by priority. Used for testing.
+	 * @return String of comma separated string values from the queue.
+	 */
 	protected String queueString() {
 		String s = "";
 		int n = heapSize;
