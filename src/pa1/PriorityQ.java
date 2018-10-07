@@ -116,8 +116,8 @@ public class PriorityQ implements Queue{
 	 */
 	public int[] priorityArray() {
 		
-		int[] priArr = new int[heapSize]; // create array for the priorities
-		for(int i = 0; i < heapSize; ++i) { // for all Entries in the heapArray, enter their priorities into the priArr
+		int[] priArr = new int[heapSize + 1]; // create array for the priorities
+		for(int i = 1; i <= heapSize; ++i) { // for all Entries in the heapArray, enter their priorities into the priArr
 			priArr[i] = heapArray.get(i).getPriority();
 		}
 		return priArr;

@@ -55,7 +55,33 @@ class QueueTest {
 	
 	@Test
 	void priorityArrayTest() {
-		
+		PriorityQ queue = new PriorityQ();
+		queue.add("9", 9);
+		queue.add("3", 3);
+		queue.add("5", 5);
+		queue.add("8", 8);
+		queue.add("11", 11);
+		queue.add("1", 1);
+		queue.add("12", 12);
+		String str = "";
+		for(int i = 1; i <= 7; ++i) {
+			str += queue.priorityArray()[i] + ", ";
+		}
+		assertEquals(str, "12, 9, 11, 3, 8, 1, 5, ");
+	}
+	
+	@Test
+	void decrementPriorityTest() {
+		PriorityQ queue = new PriorityQ();
+		queue.add("9", 9);
+		queue.add("3", 3);
+		queue.add("5", 5);
+		queue.add("8", 8);
+		queue.add("11", 11);
+		queue.add("1", 1);
+		queue.add("12", 12);
+		queue.decrementPriority(1, 10); // 12 should now have the priority of 2
+		assertEquals(queue.queueString(), "11, 9, 8, 5, 3, 12, 1, ");
 	}
 
 }
