@@ -299,7 +299,7 @@ output le.
 				String webpage = PageParser.getPage(BASE_URL + nexturl);
 				pagesvisited++;
 				if(pagesvisited >= 20){
-					//Thread.sleep(3000);
+					Thread.sleep(3000);
 					pagesvisited = 0;
 				}
 				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
@@ -314,7 +314,7 @@ output le.
 						int priority = PageParser.getPageRelevance(page , this.topics);
 						pagesvisited++;
 						if(pagesvisited >= 20){
-							//Thread.sleep(3000);
+							Thread.sleep(3000);
 							pagesvisited = 0;
 						}
 						if(priority > -1){
@@ -329,7 +329,7 @@ output le.
 			out.close();
 			bw.close();
 			fw.close();
-			}catch(IOException e /*| InterruptedException e*/){
+			}catch(IOException | InterruptedException e){
 				System.out.println(e.getMessage());
 			}
 	}
