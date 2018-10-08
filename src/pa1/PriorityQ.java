@@ -102,12 +102,15 @@ public class PriorityQ implements Queue{
 	 * @param k Amount of decrease for the ith element.
 	 */
 	public void decrementPriority(int i, int k) {
-		//TODO
-		String s = heapArray.get(i).getAddress(); // copy address of entry to be decremented
-		int p = heapArray.get(i).getPriority() - k; // new priority
+		//String s = heapArray.get(i).getAddress(); // copy address of entry to be decremented
+		//int p = heapArray.get(i).getPriority() - k; // new priority
 	
-		remove(i); // remove entry with old priority
-		add(s, p); // add same entry with updated priority
+		//remove(i); // remove entry with old priority
+		//add(s, p); // add same entry with updated priority
+		
+		heapArray.get(i).priority -= k; // decrement priority
+		heapify(i); // heapify with new priority
+		
 	}
 	
 	/**
