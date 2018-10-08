@@ -212,14 +212,19 @@ output le.
 	public void crawl(boolean focused){
 		visitedpages = new HashSet<String>();
 		
-		if(focused){
-			focusedCrawlHelper();
-		}
-		else if(this.topics.length<1){
+		if(this.topics.length<1){
 			unfocusedcrawlhelper();
 		}
 		else{
+			if(!PageParser.containsTopics(PageParser.getPage(BASE_URL + seed), this.topics)){
+				return;
+			}
+			if(focused){
+				focusedCrawlHelper();
+			}
+			else{
 			unfocusedCrawlHelperWithTopics();
+			}
 		}
 	}
 	
@@ -230,6 +235,7 @@ output le.
 		this.pagesToVisit.add(seed, 0);
 		String nexturl = null;
 		HashSet<String> prioritied = new HashSet<String>();
+		prioritied.add(seed);
 		
 		try{
 			FileWriter fw = new FileWriter(output, false);
@@ -279,6 +285,8 @@ output le.
 		this.pagesToVisit = new PriorityQ();
 		this.pagesToVisit.add(seed, 0);
 		HashSet<String> prioritied = new HashSet<String>();
+		prioritied.add(seed);
+		
 		String nexturl = null;
 		
 		try{
@@ -291,7 +299,7 @@ output le.
 				String webpage = PageParser.getPage(BASE_URL + nexturl);
 				pagesvisited++;
 				if(pagesvisited >= 20){
-					Thread.sleep(3000);
+					//Thread.sleep(3000);
 					pagesvisited = 0;
 				}
 				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
@@ -306,7 +314,7 @@ output le.
 						int priority = PageParser.getPageRelevance(page , this.topics);
 						pagesvisited++;
 						if(pagesvisited >= 20){
-							Thread.sleep(3000);
+							//Thread.sleep(3000);
 							pagesvisited = 0;
 						}
 						if(priority > -1){
@@ -321,7 +329,7 @@ output le.
 			out.close();
 			bw.close();
 			fw.close();
-			}catch(IOException | InterruptedException e){
+			}catch(IOException e /*| InterruptedException e*/){
 				System.out.println(e.getMessage());
 			}
 	}
