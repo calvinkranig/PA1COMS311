@@ -74,13 +74,14 @@ public class WikiCrawler {
 		
 		private static int getPageRelevance(String page, String[] topics){
 			int count = 0;
+			//if topic does not exist on page page has a relevance of -1 since we only look at pages that contain all topics
+			if(!containsTopics( page, topics)){
+				return -1;
+			}
 			for(int i = 0; i<topics.length; i++){
 				int start = page.indexOf("<p>");
 				int tmp = page.indexOf(topics[i], start);
-				//if topic does not exist on page page has a relevance of -1 since we only look at pages that contain all topics
-				if(tmp ==-1){
-					return -1;
-				}
+				
 				while(tmp != -1){
 					count ++;
 					start = tmp;
