@@ -1,8 +1,10 @@
 package pa1;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import static org.junit.Test.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 class QueueTest {
 
@@ -17,7 +19,7 @@ class QueueTest {
 		
 	}
 	
-	@Test
+	@org.junit.Test
 	void addTest2(){
 		PriorityQ queue = new PriorityQ();
 		queue.add("9", 9);
@@ -30,7 +32,7 @@ class QueueTest {
 		
 	}
 	
-	@Test
+	@org.junit.Test
 	void extractTest() { // queueString uses extractMax to create the string
 		PriorityQ queue = new PriorityQ();
 		queue.add("1", 1);
@@ -39,7 +41,7 @@ class QueueTest {
 		assertEquals(queue.queueString(), "3, 2, 1, ");
 	}
 	
-	@Test
+	@org.junit.Test
 	void removeTest() {
 		PriorityQ queue = new PriorityQ();
 		queue.add("9", 9);

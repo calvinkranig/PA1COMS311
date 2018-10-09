@@ -115,12 +115,15 @@ public class WikiCrawler {
 			try {
 				URL url = new URL(urlString);
 				URLConnection conn = url.openConnection();
-				BufferedReader breader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+				InputStreamReader is = new InputStreamReader(conn.getInputStream(),"UTF-8");
+				BufferedReader breader = new BufferedReader(is);
 				String inputline = "";
 				StringBuilder output = new StringBuilder();
 				while((inputline = breader.readLine())!= null){
 					output.append(inputline);
 				}
+				breader.close();
+				is.close();
 				return output.toString();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -233,16 +236,15 @@ output le.
 	private void unfocusedCrawlHelperWithTopics(){
 		int pagesvisited = 0;
 		this.pagesToVisit = new FIFOQ();
+		StringBuilder outputstream = new StringBuilder();
 		this.pagesToVisit.add(seed, 0);
 		String nexturl = null;
 		HashSet<String> prioritied = new HashSet<String>();
 		prioritied.add(seed);
 		
+		
 		try{
-			FileWriter fw = new FileWriter(output, false);
-			BufferedWriter bw = new BufferedWriter(fw);
-			PrintWriter out = new PrintWriter(bw);
-			out.println(this.max);
+			
 			
 			while(visitedpages.size()<this.max&& (nexturl = this.nextURL())!=null){
 				String webpage = PageParser.getPage(BASE_URL + nexturl);
@@ -252,10 +254,10 @@ output le.
 					pagesvisited = 0;
 				}
 				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
-				//write edges to output
-				writeToOutput(links, out, nexturl);
 				//Add edges to edges to visit
 				for(String link:links){
+					//write edges to output
+					outputstream.append(nexturl + " " + link + "\n" );
 					if(!prioritied.contains(link)){
 						prioritied.add(link);
 						if(PageParser.containsTopics(PageParser.getPage(BASE_URL + link), this.topics)){
@@ -267,17 +269,13 @@ output le.
 							pagesvisited = 0;
 						}	
 					}
-				}
-				
-				
-				
+				}	
 			}
-			out.close();
-			bw.close();
-			fw.close();
-			}catch(IOException | InterruptedException e){
+			}catch( InterruptedException e){
 				System.out.println(e.getMessage());
 			}
+		writeToOutput(outputstream, visitedpages.size());
+			
 	}
 	
 	private void focusedCrawlHelper(){
@@ -285,16 +283,13 @@ output le.
 		int pagesvisited = 0;
 		this.pagesToVisit = new PriorityQ();
 		this.pagesToVisit.add(seed, 0);
+		StringBuilder outputstream = new StringBuilder();
 		HashSet<String> prioritied = new HashSet<String>();
 		prioritied.add(seed);
 		
 		String nexturl = null;
 		
 		try{
-			FileWriter fw = new FileWriter(output, false);
-			BufferedWriter bw = new BufferedWriter(fw);
-			PrintWriter out = new PrintWriter(bw);
-			out.println(this.max);
 			
 			while(visitedpages.size()<this.max&& (nexturl = this.nextURL())!=null){
 				String webpage = PageParser.getPage(BASE_URL + nexturl);
@@ -304,10 +299,10 @@ output le.
 					pagesvisited = 0;
 				}
 				ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
-				//write edges to output
-				writeToOutput(links, out, nexturl);
 				//Add edges to edges to visit
 				for(String link:links){
+					//write edges to output
+					outputstream.append(nexturl + " " + link + "\n" );
 					if(!prioritied.contains(link)){//check to see if link was already prioritized
 						prioritied.add(link);//add link to list of prioritized pages
 						String page = PageParser.getPage(BASE_URL + link);
@@ -322,57 +317,46 @@ output le.
 							this.pagesToVisit.add(link, priority);
 						}
 					}
-				}
-				
-				
-				
+				}	
 			}
-			out.close();
-			bw.close();
-			fw.close();
-			}catch(IOException | InterruptedException e){
+			}catch( InterruptedException e){
 				System.out.println(e.getMessage());
 			}
+		writeToOutput(outputstream, visitedpages.size());
 	}
 	
 	private void unfocusedcrawlhelper(){
 		int pagesvisited = 0;
 		this.pagesToVisit = new FIFOQ();
+		StringBuilder outputstream = new StringBuilder();
 		this.pagesToVisit.add(seed, 0);
 		String nexturl;
 		
 		try{
-		FileWriter fw = new FileWriter(output, false);
-		BufferedWriter bw = new BufferedWriter(fw);
-		PrintWriter out = new PrintWriter(bw);
-		out.println(this.max);
-		while(visitedpages.size()<this.max&& (nexturl = this.nextURL())!= null){
-			 
-			String webpage = PageParser.getPage(BASE_URL + nexturl);
-			pagesvisited++;
-			
-			ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
-			//write edges to output
-			writeToOutput(links, out, nexturl);
-			//Add edges to edges to visit
-			for(String link:links){
-				this.pagesToVisit.add(link, 0);
+		
+			while(visitedpages.size()<this.max&& (nexturl = this.nextURL())!= null){
+					 
+					String webpage = PageParser.getPage(BASE_URL + nexturl);
+					pagesvisited++;
+					
+					ArrayList<String> links = PageParser.extractLinks(webpage, nexturl);
+					//Add edges to edges to visit
+					for(String link:links){
+						//write edges to output
+						outputstream.append(nexturl + " " + link + "\n" );
+						this.pagesToVisit.add(link, 0);
+					}
+					
+					
+					if(pagesvisited >= 20){
+							Thread.sleep(3000);
+						pagesvisited = 0;
+					}	
 			}
-			
-			
-			if(pagesvisited >= 20){
-				Thread.sleep(3000);
-				pagesvisited = 0;
-			}
-			
-			
-		}
-		out.close();
-		bw.close();
-		fw.close();
-		}catch(IOException | InterruptedException e){
+		}catch(InterruptedException e){
 			System.out.println(e.getMessage());
 		}
+		writeToOutput(outputstream, visitedpages.size());
 		
 		
 	}
@@ -384,6 +368,26 @@ output le.
 		for(String link: links){
 			out.println(currentURL + " " + link );
 		}
+	}
+	
+	private void writeToOutput(StringBuilder s , int found){
+		FileWriter fw;
+		try {
+			fw = new FileWriter(output, false);
+			BufferedWriter bw = new BufferedWriter(fw);
+			PrintWriter out = new PrintWriter(bw);
+			out.println(found);
+			out.print(s.toString()); //Is there something faster
+			
+			out.close();
+			bw.close();
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	
