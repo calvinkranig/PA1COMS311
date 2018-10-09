@@ -5,7 +5,8 @@ import java.util.ArrayList;
 /**
  * 
  * @author ckranig, ans66
- *Class for representing a Priority Queue. All methods with an index argument need to keep in mind that the heapArray starts at 1.
+ *Class for representing a Priority Queue. All methods with an index argument need to keep in mind that the heapArray
+ * starts at 1.
  */
 public class PriorityQ implements Queue{
 	
