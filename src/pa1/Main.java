@@ -12,7 +12,7 @@ public class Main {
 		String[] topics = new String[0];
 		//String page = "space space space j3j3j2 space";
 		//System.out.println(PageParser.getPageRelevance(page, topics));
-		WikiCrawler c = new WikiCrawler("/wiki/Calvin_and_Hobbes", 200,topics, outputfile);
+		WikiCrawler c = new WikiCrawler("/wiki/Calvin_and_Hobbes", 20,topics, outputfile);
 		c.crawl(false);
 	}
 }
