@@ -186,11 +186,8 @@ public class WikiCrawler {
 	 * document. You can assume that the document is HTML from some wiki page.
 	 * The method must (a) extract only relative addresses of wiki links, i.e.,
 	 * only links that are of the form /wiki/XXXX (b) only extract links that
-	 * appear after the first occurrence of the html tag
-	 * <p>
-	 * (or
-	 * <P>
-	 * ) (c) Must not extract any wiki link that contain characters such as \#"
+	 * appear after the first occurrence of the html tag <p> (or <P>) (c) Must 
+	 * not extract any wiki link that contain characters such as \#"
 	 * or \:" (d) The order in which the links in the returned array list must
 	 * be exactly the same order in which they appear in the document
 	 * 
