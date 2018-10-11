@@ -203,14 +203,16 @@ public class WikiCrawler {
 	 */
 	public ArrayList<String> extractLinks(String document) {
 		ArrayList<String> links = new ArrayList<String>();
+		HashSet<String> hlinks = new HashSet<String>();
 		int start = document.indexOf("<p>");
 		int tmp = document.indexOf("/wiki/", start);
 
 		while (tmp != -1) {
 			start = document.indexOf("\"", tmp);
 			String substring = document.substring(tmp, start);
-			if (!substring.contains(":") || !substring.contains("#")) {
+			if (!substring.contains(":") || !substring.contains("#")||!hlinks.contains(substring)) {
 				links.add(substring);
+				hlinks.add(substring);
 			}
 			tmp = document.indexOf("/wiki/", start);
 		}
