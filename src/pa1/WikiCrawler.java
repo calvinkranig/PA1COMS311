@@ -194,6 +194,8 @@ public class WikiCrawler {
 	 * or \:" (d) The order in which the links in the returned array list must
 	 * be exactly the same order in which they appear in the document
 	 * 
+	 * Does not return duplicate links
+	 * 
 	 * This is use for specification purposes only. Real extract links looks to
 	 * see if link is already been extracted, and that it does not refer to the
 	 * current page.
